@@ -1,0 +1,25 @@
+# Standards: 0.1
+---
+# @var bartender_user:description: User to run user-specific commands
+# @var bartender_user:value: bartender_user | default(homebrew_user) | default(ansible_user_id)
+# bartender_user:
+
+# @var bartender_automatically_update:description: Automatically update
+bartender_automatically_update: True
+
+# @var bartender_welcome_message_again:description: Update welcome message
+bartender_welcome_message_again: True
+
+# @var bartender_reduce_update_frequency_on_battery:description: Reduce update frequency
+bartender_reduce_update_frequency_on_battery: True
+
+# @var bartender_license:description: License key for Bartender
+bartender_license:
+
+# @var bartender_license_holders_name:description: Name of the license holder
+bartender_license_holders_name:
+
+# @var bartender_started:description: Start in background after install
+bartender_started: True
+
+...

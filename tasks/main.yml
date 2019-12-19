@@ -1,0 +1,115 @@
+# Standards: 0.1
+---
+- name: Fact bartender user
+  set_fact:
+    bartender_user: "{{ bartender_user | default(homebrew_user) | default(ansible_user_id) }}"
+  tags:
+    - bartender
+
+- become: "{{ (bartender_user != ansible_user_id) | bool }}"
+  become_user: "{{ bartender_user }}"
+  block:
+    - name: Install required package
+      homebrew_cask:
+        name: bartender
+        greedy: True
+        options: appdir=/Applications
+        accept_external_apps: False
+        state: upgraded
+      tags:
+        - bartender
+
+    - name: Remove quarantine flag
+      register: bartender_quarantine
+      failed_when: bartender_quarantine.rc != 0 and "No such xattr" not in bartender_quarantine.stderr
+      changed_when: bartender_quarantine.rc == 0
+      command: xattr -d com.apple.quarantine /Applications/Bartender\ 3.app
+      tags:
+        - bartender
+
+    - name: Has launched before
+      notify:
+        - Kill appcleaner
+        - Start appcleaner
+      osx_defaults:
+        domain: com.surteesstudios.Bartender
+        key: SUHasLaunchedBefore
+        type: bool
+        value: True
+        state: present
+      tags:
+        - bartender
+
+    - name: Automatically update
+      notify:
+        - Kill bartender
+        - Start bartender
+      osx_defaults:
+        domain: com.surteesstudios.Bartender
+        key: SUAutomaticallyUpdate
+        type: bool
+        value: '{{ bartender_automatically_update }}'
+        state: present
+      tags:
+        - bartender
+
+    - name: Update welcome message
+      notify:
+        - Kill bartender
+        - Start bartender
+      osx_defaults:
+        domain: com.surteesstudios.Bartender
+        key: UpdateWelcomeMessageShowAgain
+        type: bool
+        value: '{{ bartender_welcome_message_again }}'
+        state: present
+      tags:
+        - bartender
+
+    - name: Reduce update frequency
+      notify:
+        - Kill bartender
+        - Start bartender
+      osx_defaults:
+        domain: com.surteesstudios.Bartender
+        key: ReduceUpdateCheckFrequencyWhenOnBattery
+        type: bool
+        value: '{{ bartender_reduce_update_frequency_on_battery }}'
+        state: present
+      tags:
+        - bartender
+
+    - name: License key value
+      notify:
+        - Kill bartender
+        - Start bartender
+      osx_defaults:
+        domain: com.surteesstudios.Bartender
+        key: license2
+        type: string
+        value: "{{ bartender_license }}"
+        state: present
+      tags:
+        - bartender
+
+    - name: License holder name
+      notify:
+        - Kill bartender
+        - Start bartender
+      osx_defaults:
+        domain: com.surteesstudios.Bartender
+        key: license2HoldersName
+        type: string
+        value: "{{ bartender_license_holders_name }}"
+        state: present
+      tags:
+        - bartender
+
+    - name: Start background application
+      when: bartender_started
+      changed_when: False
+      command: open -j /Applications/Bartender\ 3.app
+      tags:
+        - bartender
+
+...

@@ -1,0 +1,16 @@
+# Standards: 0.1
+---
+- name: Kill bartender
+  command: killall Bartender\ 3
+  register: bartender_kill
+  failed_when: bartender_kill.rc != 0 and "No matching processes belonging to you were found" not in bartender_kill.stderr
+  become: "{{ (bartender_user != ansible_user_id) | bool }}"
+  become_user: "{{ bartender_user }}"
+
+- name: Start bartender
+  when: bartender_started
+  command: open -j /Applications/Bartender\ 3.app
+  become: "{{ (bartender_user != ansible_user_id) | bool }}"
+  become_user: "{{ bartender_user }}"
+
+...
