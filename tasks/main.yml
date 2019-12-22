@@ -10,6 +10,7 @@
   become_user: "{{ bartender_user }}"
   block:
     - name: Install required package
+      ignore_errors: True
       homebrew_cask:
         name: bartender
         greedy: True
@@ -105,7 +106,7 @@
       tags:
         - bartender
 
-    - name: Start background application
+    - name: Start application
       when: bartender_started
       changed_when: False
       command: open -j /Applications/Bartender\ 3.app
