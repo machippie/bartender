@@ -1,16 +1,6 @@
 
 ## Default Variables
 
-### bartender_automatically_update
-
-Automatically update
-
-#### Default value
-
-```yaml
-bartender_automatically_update: true
-```
-
 ### bartender_license
 
 License key for Bartender
@@ -31,16 +21,6 @@ Name of the license holder
 bartender_license_holders_name:
 ```
 
-### bartender_reduce_update_frequency_on_battery
-
-Reduce update frequency
-
-#### Default value
-
-```yaml
-bartender_reduce_update_frequency_on_battery: true
-```
-
 ### bartender_started
 
 Start in background after install
@@ -59,16 +39,6 @@ User to run user-specific commands
 
 ```yaml
 bartender_user | default(homebrew_user) | default(ansible_user_id)
-```
-
-### bartender_welcome_message_again
-
-Update welcome message
-
-#### Default value
-
-```yaml
-bartender_welcome_message_again: true
 ```
 ## Dependencies
 
