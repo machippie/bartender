@@ -4,15 +4,6 @@
 # @var bartender_user:value: bartender_user | default(homebrew_user) | default(ansible_user_id)
 # bartender_user:
 
-# @var bartender_automatically_update:description: Automatically update
-bartender_automatically_update: True
-
-# @var bartender_welcome_message_again:description: Update welcome message
-bartender_welcome_message_again: True
-
-# @var bartender_reduce_update_frequency_on_battery:description: Reduce update frequency
-bartender_reduce_update_frequency_on_battery: True
-
 # @var bartender_license:description: License key for Bartender
 bartender_license:
 
